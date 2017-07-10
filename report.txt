@@ -1,0 +1,352 @@
+1. High-level description of public member functions
+
+Actor class
+
+Actor(StudentWorld* world, int startX, int startY, Direction startDir, int imageID, int depth)
+The Actor class constructor first calls the constructor for GraphObject and then initializes Actor's private data members (m_world, moved, stunned, poisoned). I defined an Actor class constructor because the imageID, starting direction, starting location, and depth of each actor in the simulaiton varies.
+
+doSomething()
+I chose to define a pure virtual version of the doSomething() function in my Actor class because all actors in Bugs! must perform an action during each tick and each type of actor performs different actions.
+
+isDead() const
+I chose to define a virtual constant isDead() function in my Actor class because all actors determined dead must be removed and each type of actor is determined dead in a different way. isDead() is constant because it only returns whether or not an actor is dead and does not alter the class object. This version of isDead() returns false because every actor that is not an EnergyHolder must not be removed.
+
+blocksMovement() const
+I chose to define a virtual constant blocksMovement() function in my Actor class because some actors block movement while others don't. blocksMovement() is constant because it only returns the value of a data member and does not alter the class object. This version of blocksMovement() returns false because every actor that is not a Pebble does not block the movement of other actors.
+
+getBitten()
+I chose to define a virtual getBitten() function in my Actor class because actors in Bugs! react in different ways when bitten. This version of getBitten() simply returns because only Ants and BabyGrasshoppers are affected when bitten.
+
+getPoisoned()
+I chose to define a virtual getPoisoned() function in my Actor class because each type of actor reacts differently when poisoned. This version of getPoisoned() like getBitten() simply returns because only Ants and BabyGrasshoppers are affected when poisoned.
+
+getStunned()
+I chose to define a virtual getStunned() function in my Actor class because actors in Bugs! react differently when bitten. This version of getStunned() like getBitten() and getPoisoned() simply returns because only Ants and BabyGrasshoppers are affected when poisoned.
+
+isEdible() const
+I chose to define a virtual constant isEdible() function in my Actor class because some actors in Bugs! are edible while others are not. isEdible() is constant because it only determines whether or not an actor is edible and does not change the class object. This version of isEdible() returns false because only Food actors are edible.
+
+isPheromone(int colony) const
+I chose to define a virtual constant isPheromone() function in my Actor class because some actors are pheromones while others are not. isPheromone() is constant because it only determines whether or not an actor is a pheromone and does not alter the class object. This version of isPheromone(int colony) returns false because only Pheromone actors are pheromones.
+
+isEnemy(int colony) const
+I chose to define a virtual constant isEnemy() function in my Actor class because actors can be enemies of each other and each type of actor determines whether or not another actor is an adversary in a different way. isEnemy() is constant because it only determines if an actor is an enemy and does not alter the class object. This version of isEnemy(in colony) returns false because only Insects can be deemed enemies.
+
+isDangerous(int colony) const
+I chose to define a virtual constant isDangerous() function because actors can be dangerous to other actors and are determined dangerous in different ways. isDangerous() is constant because it only determines whether or not an actor is dangerous and does not alter the class object. This version of isDangerous(int colony) return false because only Triggerable actors are dangerous.
+
+isAntHill(int colony) const
+I chose to define a virtual constant isAntHil(int colony) function because some actors are anthill while others are not and this is determined differently for each type of actor. isAntHill() is constant because it only determines whether or not an actor is an AntHill and does not alter the class object. This version of isAntHill(int colony) returns false because only AntHill actors are anthills.
+
+getWorld() const
+I chose to define a non-virtual constant getWorld() function because all actors in Bugs! belong to the same world. getWorld() is constant because it only returns a data member and does not alter the Actor object. getWorld() allows Actor objects to access its world by returning a pointer to the private data member m_world.
+
+randDirection() const
+I chose to define a non-virtual constant randDirection() helper function because some actors need to initialized to face a random direction. randDirection() is constant because it only returns a Direction and does not alter the Actor object. randDirection() picks a random number between 1 and 4 inclusive and returns the corresponding Direction.
+
+didMove() const
+I chose to define a non-virtual constant didMove() function because the movement of each type of actor moved is determined in the same way. didMove() is constant because it only returns whether or not each actor moved and does not alter the Actor object. didMove() returns the private data member moved.
+
+setMove(bool value)
+I chose to define a non-virtual setMove() function in the Actor class because the movement of each type of actor is set in the same way. setMove(bool value) assigns a boolean value to the private data member moved.
+
+setStunned(bool value)
+I chose to define a non-virtual setStunned() function in the Actor class because the state of being stunned for each type of actor is set in the same way. setStunned(bool value) assigns a boolean value to the private data member stunned.
+
+isStunned() const
+I chose to define a non-virtual constant isStunned() function in the Actor class because the state of being stunned for each type of actor is determined in the same way. isStunned() is constant because it only determines whether or not an actor is currently stunned and does not alter the Actor object. isStunned() returns the private data member stunned.
+
+setPoisoned(bool value)
+I chose to define a non-virtual setPoisoned() function in the Actor class because the state of being poisoned for each type of actor is set in the same way. setPoisoned(bool value) assigns a boolean value to the private data member poisoned.
+
+isPoisoned() const
+I chose to define a non-virtual constant isPoisoned() function in the Actor class because the state of being poisoned for each type of actor is determined in the same way. isPoisoned() is constant because it only determines whether or not an actor is currently poisoned and does not alter the Actor object. isPoisoned() returns the private data member poisoned.
+
+
+
+Pebble
+
+Pebble(StudentWorld* sw, int startX, int startY)
+The Pebble class constructor calls the constructor for Actor. I defined a Pebble class constructor because a Pebble object is a type of Actor and has a specific imageID and starting location.
+
+doSomething()
+I chose to define a virtual doSomething() function in the Pebble class because otherwise, the pure virtual doSomething() function defined in Actor class would not be overidden. This would cause an error since Pebble class would be considered an abstract class but is not intended to be inherited by any concrete classes. In other words, each actor including Pebble is required to perform an action during each tick. This version of doSomething() simply returns because Pebbles does not do anything during a tick.
+
+blocksMovement()
+I chose to define a virtual blocksMovement() function in the Pebble class to override the one defined in the Actor class because Pebble actors do block the movement of other actors.
+
+
+
+EnergyHolder
+
+EnergyHolder(StudentWorld* sw, int startX, int startY, Direction startDir, int energy, int imageID, int depth)
+The EnergyHolder class constructor first calls the constructor for Actor and then initializes its private data member (m_energy). I chose to define a EnergyHolder class constructor because it is a type of Actor that has a variable imageID, depth, starting direction, and starting location.
+
+isDead()
+I chose to define a virtual isDead() function in the EnergyHolder class to override the one defined in the Actor class because EnergyHolders can be determined dead and be removed from the simulation. isDead() checks how much energy the actor has and returns true if the actor has less than 0.
+
+becomesFoodUponDeath() const
+I chose to define a virtual becomesFoodUponDeath() function in the EnergyHolder class because some EnergyHolders are replaced by a Food actor when dead while others are not. becomesFoodUponDeath() is constant because it only determines whether or not an EnergyHolder actor should be replaced by food and does not alter the EnergyHolder object. This version of becomesFoodUponDeath() returns false because only Insect actors become food upon death.
+
+getEnergy() const
+I chose to define a non-virtual constant getEnergy() function to allow EnergyHolder actors access to the amount of energy it has. getEnergy() is constant because it only determines how much energy an EnergyHolder actor has and does not alter the class object. getEnergy() returns the private data member m_energy.
+
+updateEnergy(int amt)
+I chose to define a non-virtual updateEnergy() function because the amount of energy for each type of EnergyHolder is changed in the same way. updateEnergy(int amt) increases or decreases the private data member m_energy.
+
+addFood(int amt)
+I chose to define a non-virtual addFood() function because each type of EnergyHolder adds food to its square in the same way. addFood(int amt) increases the amount of energy that an exisiting Food actor has or creates a new Food actor with amt energy and adds that Food actor to the simulation.
+
+pickupFood(int amt)
+I chose to define a non-virtual pickupFood() function because each type of EnergyHolder picks up food in its square in the same way. pickupFood(int amt) decreases the energy of an existing Food actor and returns the amount decreased.
+
+pickupAndEatFood(int amt)
+I chose to define a non-virtual pickupAndEatFood() function in the EnergyHolder class because each type of EnergyHolder picks up food and eats it in the same way. pickupAndEatFood(int amt) returns true if there is an existing Food actor and increases the actor's energy by the amount of food picked up.
+
+
+
+Food
+
+Food(StudentWorld* sw, int startX, int startY, int energy)
+The Food class constructor calls the constructor for EnergyHolder. I chose to define a Food class constructor because a Food object is a type of EnergyHolder that has a specific starting amount of energy and starting location.
+
+doSomething()
+I chose to define a virtual doSomething() function to override the one defined in Actor since each actor in Bugs! is required to perform a different action. This version of doSomething() simply returns because Food actors don't do anything during a tick.
+
+isEdible() const
+I chose to define a virtual constant isEdible() function in the Food class to override the one defined in the Actor class because Food actors are edible. isEdible() is constant because it only determines whether or not food is edible and does not alter the Food object. This version of isEdible() returns true because Food actors are edible.
+
+
+
+AntHill
+
+AntHill(StudentWorld* sw, int startX, int startY, int colony, Compiler* program)
+The AntHill class constructor first calls the constructor for EnergyHoler and then initializes its own private data members (m_program, m_colony). I chose to define an AntHill constructor because AntHill objects are a type of EnergyHolder with a variable imageID and starting location.
+
+doSomething()
+I chose to define a virtual doSomething() function to override the one defined in the Actor class because each actor is required to perform a different action. This version of doSomething() decrements the amount of energy the AntHill has, picks up and eats food if there is any and/or gives birth to a new ant.
+
+isMyHill(int colony) const
+I chose to define a virtual constant isMyHill() function in the AntHill class to override the one defined in the Actor class because whether or not each AntHill belongs to a colony is determined differently from other actors. isMyHill() is constant because it only determines whether or not the anthill belongs to a given colony and does not alter the AntHill object. This version of isMyHill(int colony) returns true if colony is equal to the private date member m_colony.
+
+
+
+Pheromone
+Pheromone(StudentWorld* sw, int startX, int startY, int colony, int imageID)
+The Pheromone class constructor calls the constructor for EnergyHolder.  chose to define a Pheromone class constructor because a Pheromone is a type of EnergyHolder with a variable imageID and starting location and specific starting direction, depth, and amount of energy.
+
+doSomething()
+I chose to define a virtual doSomething() function in the Pheromone class to override the one defined in the Actor class because each actor is required to perform a different action during a tick. This version of doSomething() decrements the amount of energy.
+
+isPheromone(int colony) const
+I chose to define a virtual constant isPheromone() function to override the one defined in the Actor class because Pheromone objects are pheromones and are determined in the same way. isPheromone() is constant because it only determines whether or not a Pheromone belongs to a given ant colony and does not alter the Pheromone object. This version of isPheromone(int colony) returns true if colony is equal to the private data member cn.
+
+increaseStrength()
+I chose to define a non-virtual increaseStrength() function because all Pheromone actors increase their strength/energy in the same way. increaseStrength() increases actor's energy by 256 to a maximum of 768.
+
+
+
+TriggerableActor
+
+TriggerableActor(StudentWorld* sw, int x, int y, int imageID)
+The Triggerable class constructor calls the Actor class constructor. I chose to define a TriggerableActor class constructor because TriggerableActors are a type of Actors with a variable imageID and starting location.
+
+isDangerous(int colony) const
+I chose to define a virtual constant isDangerous() function to override the one defined in the Actor class because TriggerableActors are dangerous to other actors. isDangerous() is constant because it only determines whether or not TriggerableActors are dangerous. This version of isDangerous(int colony) returns true.
+
+
+
+WaterPool
+
+WaterPool(StudentWorld* sw, int x, int y)
+The WaterPool class constructor calls the constructor for TriggerableActor. I chose to define a WaterPool class constructor because WaterPool objects are a type of TriggerableActors with a specific imageID and starting location.
+
+doSomething()
+I chose to define a virtual doSomething() function in the WaterPool class to override the one defined in the Actor class because each actor is required to perform a different action. This version of doSomething() attempts to stun all stunnable actors.
+
+
+
+Poison
+
+Poison(StudentWorld* sw, int x, int y)
+The Poison class constructor calls the constructor for TriggerableActor. I chose to define a WaterPool class constructor because Poison objects are a type of TriggerableActors with a specific imageID and starting location.
+
+doSomething()
+I chose to define a virtual doSomething() function in the Poison class to override the one defined in the Actor class because each actor is required to perform a different action. This version of doSomething() attempts to poison all poisonable actors.
+
+
+
+Insect
+
+Insect(StudentWorld* world, int startX, int startY, int energy, int imageID)
+The Insect class constructor first class the constructor for EnergyHolder and then initializes its own private data member sleepTicks. I chose to define an Insect constructor because Insect objects are a type of EnergyHolder with a variable imageID, starting location and amount of energy.
+
+getBitten(int amt)
+I chose to define a virtual getBitten() function to override the one defined in the Actor class because Insects actually react to getting bitten and each type of Insect reacts differently. This version of getBitten(int amt) decreases the actor's energy by amt and sets dead.
+
+getPoisoned()
+I chose to define a virtual getPoisoned() function to override the one defined in the Actor class because Insects actually react to getting poisoned and each type of Insect reacts differently. This version of getPoisoned() decreases the actor's energy by 15 and replaces the Insect with food if dead.
+
+getStunned()
+I chose to define a virtual getStunned() function to override the one defined in the Actor class because Insects actually react to getting stunned and each type of Insect reacts differently. This version of getStunned() increases the number of sleeping ticks by 2.
+
+isEnemy(int colony) const
+I chose to define a virtual constant isEnemy() function to override the one defined in the Actor class because Insects can be enemies of each other and whether or not an Insect is an enemy is determined differently. isEnemy() is constant because it only determines whether or not an insect is an enemy of another insect and does not alter the Insect object. isEnemy(int colony) returns true because all Insects except for certain types of ants are enemies of each other.
+
+isDangerous(int colony) const
+I chose to define a virtual constant isDangerous() function to override the one defined in the Actor class because Insects can be dangerous to other actors and whether or not an Insect is dangerous is determined differently. isDangerous() is constant because it only determines whether or not an insect is dangerous to another insect and does not alter the Insect object. isDangerous(int colony) returns true because all Insects except for BabyGrasshopper and certain types of ants are dangerous to each other.
+
+moveForwardIfPossible()
+I chose to define a virtual moveForwardIfPossible() function because all Insects can move forward but each type moves forward in different ways. This version of moveForwardIfPossible() retrieves the coordinates in front of the actor and return true if it can move there and does move.
+
+getXYInFrontOfMe(int& x, int& y) const
+I chose to define a non-virtual constant getXYInFrontOfMe() function because all Insects retrieve the coordinates in front of them in the same way. getXYInFrontOfMe() is constant because it alters its parameters but does not change the Insect object. getXYInFrontOfMe(int& x, int& y) increments either x or y depending on the direction the actor is facing.
+
+increaseSleepTicks(int amt)
+I chose to define a non-virtual increaseSleepTicks() function because all Insects increase how long they sleep in the same way. increaseSleepTicks(int amt) increases the private data member sleepTicks by amt.
+
+getSleepTicks() const
+I chose to define a non-virtual constant getSleepTicks() function because all Insects retrieve their number of sleep ticks in the same way. getSleepTicks() is constant because it only returns the number of sleep ticks and does not alter the Insect object. getSleepTicks() returns the private data member sleepTicks.
+
+setSleepTicks(int value)
+I chose to define a non-virtual setSleepTicks() function because all Insects set their number of sleep ticks in the same way. getSleepTicks() assigns value to the private data member sleepTicks.
+
+
+
+Ant
+
+Ant(StudentWorld* sw, int startX, int startY, int colony, Compiler* program, int imageID)
+The Ant class constructor first calls the constructor for Insect and then initializes its own private data members. I chose to define a class constructor for Ant because Ant objects are a type of Insect with a variable imageID and starting location.
+
+doSomething()
+I chose to define a virtual doSomething() function in the Ant class to override the one defined in the Actor class because each actor is required to perform a different action. This version of doSomething() decrements the actor's energy, replaces it with food if dead and interprets up to ten commands.
+
+getBitten(int amt)
+I chose to define a virtual getBitten() function in the Ant class to override the one defined in the Actor class because Ant actors actually react to getting bitten and all in the same way. This version of getBitten(int amt) decreases the actor's energy by amt, replaces with food if dead, and sets bitten to true.
+
+isEnemy(int colony) const
+I chose to define a virtual constant isEnemy() function in the Ant class to override the one defined in Insect because Ant actors are determined enemies differently. isEnemy() is constant because it only determines if an Ant is an enemy but does not alter the Ant object. This version of isEnemy(int colony) returns true if colony is equal to the private member cn.
+
+isDangerous(int colony) const
+I chose to define a virtual constant isDangerous() function in the Ant class to override the one defined in Insect because Ant actors are determined dangerous differently. isDangerous() is constant because it only determines if an Ant is dangerous but does not alter the Ant object. This version of isDangerous(int colony) returns true if colony is equal to the private member cn.
+
+moveForwardIfPossible()
+I chose to define a virtual moveForwardIfPossible() function in the Ant class to override the one defined in the Insect class because Ants moved forward differently from other Insects and all Ants move forward in the same way. This version of moveForwardIfPossible() calls and sets move to Insect's moveForwardIfPossible(), sets blocked, bitten, and poisoned correspondingly, and returns true if it did move.
+
+
+
+Grasshopper
+
+Grasshopper(StudentWorld* sw, int startX, int startY, int energy, int imageID)
+The Grasshopper class constructor first calls Insect's constructor and then initializes its own private data member distance. I chose to define a Grasshoppper class constructor because Grasshoppers are a type of Insect with a variable imageID, starting location and starting amount of energy.
+
+doSomething()
+I chose to define a virtual doSomething() function in the Grasshopper class because all actors are required to perform a different action. This version of doSomething() decrements the actor's energy, attempts to transform a BabyGrasshoppper into an AdultGrasshopper, bite, or jump, pick up and eat food, and move the actor forward.
+
+
+
+BabyGrasshopper
+
+BabyGrasshopper(StudentWorld* sw, int startX, int startY)
+The BabyGrasshopper class constructor calls the Grasshopper constructor. I chose to define a BabyGrasshopper constructor because BabyGrasshoppers are a type of Grasshopper with a specific imageID, starting location and starting amount of energy.
+
+isDangerous(int colony) const
+I chose to define a virtual constant isDangerous(int colony) function because BabyGrasshoppers are determined dangerous differently from other Insects. isDangerous() is constant because it only determines whether or not a baby grasshopper is dangerous but does not alter the BabyGrasshopper object. This version of isDangerous(int colony) returns false because BabyGrasshoppers are not dangerous to any other insect.
+
+
+
+AdultGrasshopper
+
+AdultGrasshopper(StudentWorld* sw, int startX, int startY)
+The AdultGrasshopper class constructor calls the Grasshopper constructor. I chose to define an AdultGrasshopper constructor because AdultGrasshoppers are a type of Grasshopper with a specific imageID, starting location and starting amount of energy.
+
+getBitten(int amt)
+I chose to define a virtual getBitten() function in the AdultGrasshopper class to override the one defined in the Insect class because AdultGrasshoppers unlike other insects do not react to getting bitten. This version of getBitten(int amt) simply returns.
+
+getStunned()
+I chose to define a virtual getStunned() function in the AdultGrasshopper class to override the one defined in the Insect class because AdultGrasshoppers unlike other insects do not react to getting stunned. This version of getStunned(int amt) simply returns.
+
+getPoisoned()
+I chose to define a virtual getPoisoned() function in the AdultGrasshopper class to override the one defined in the Insect class because AdultGrasshoppers unlike other insects do not react to getting poisoned. This version of getPoisoned(int amt) simply returns.
+
+
+
+2. Failed functionality and bugs
+I believe I successfully implemented all functions required to run the simulation without bugs.
+
+3. Design decisions
+- The sample simulation displayed the status text at the top differently from what was instructed in the project spec so I followed what was printed out in the sample simulation.
+- It was not specified whether or not insects could be poisoned again on the same square so I made the decision to have insects remember if they have been poisoned and not allow insects to be poisoned on the same square.
+
+4. Testing classes
+
+Actor
+
+All of the other classes defined for the Bugs! simulation are derived from the Actor class. So testing all the derived classes and their functions essentially tested the Actor class itself.
+
+
+Pebble
+
+To test the pebble class, I surrounded a baby grasshopper with pebbles in the field file. If the pebble class was correctly implemented, the grasshopper would get stuck when trying to move onto a square with a pebble on it and would be forced to move elsewhere. I used the debugger to check that the Pebble object did nothing when asked to do something during a tick.
+
+
+EnergyHolder
+
+Testing all derived EnergyHolder classes and their functions simultaneously tested the EnergyHolder class itself because derived classes use EnergyHolder functions.
+
+
+Food
+
+To test the Food class, I surrounded a baby grasshopper with food items in the field file and added break points inside the pickupAndEatFood and addFood functions I defined in my EnergyHolder class. I used the debugger to check that actors on the same square as a Food object were able to detect that a food object is in the same square (and add a Food object if non-existent), increase/decrease their food/energy, and increase/decrease a Food object's energy. I also used the debugger to check that the Food object did nothing when asked to do something during a tick.
+
+
+AntHill
+
+To test the AntHill class, I surrounded one anthill with a few food items and a rectangle of pebbles in the field file. If the AntHill class was correctly implemented, it should initially give birth to five ants which would become visible during the simulation. Then I added breakpoints and used the debugger to check that the anthill would attempt to pick up food and that the energy of the anthill would correctly increased/decreased correspondingly.
+
+
+Pheromone
+
+To test the Pheromone class, I created an ant file that would emit/strengthen a pheromone during the simulation. If correctly implemented, pheromones would be visible on the field. I added breakpoints inside my isPheromone and increaseStrength functions and used the debugger to check that each pheromone would return true if it belonged to a given colony and would increase its energy by 256 each time up to a maximum of 768.
+
+
+TriggerableActor
+
+Testing all derived TriggerableActor classes and their functions simultaneously tested the TriggerableActor class itself because derived classes must call the TriggerableActor constructor and use its functions.
+
+
+WaterPool
+
+To test the WaterPool class, I surrounded a baby grasshopper with a rectangle of WaterPool objects in the field file. Then I ran the simulation and froze it to check that the grasshopper would sleep for only two extra ticks if it landed on the pool of water.
+
+
+Poison
+
+Similar to testing the WaterPool class, to test the Poison class, I surrounded a baby grasshopper with a rectangle of Poison objects in the field file. Then I added breakpoints inside the getPoisoned() function I defined for Insects and used the debugger to check that the grasshopper's energy would decrease by 50 if it landed on a poison. I also used the debugger to check that the Poison object would only poison the grasshopper if it had not be poisoned before.
+
+
+Insect
+
+Testing all derived Insect classes and their functions essentially tested the Insect class itself because derived classes must call the Insect constructor and use or override its functions.
+
+
+Ant
+
+To test the Ant class, I added an anthill surrounded by a small rectangle of pebbles and a few food items. I wrote a few different bug files that called every command. I added breakpoints within the interpreter() function of my Ant class and used the debugger to check if the ant correctly decremented its energy when asked to do something and successfully interpreted each command. If correctly implemented, the ant would increase its energy when asked to pick up and eat food, decrease its food when asked to drop food, rotate when asked to rotate, etc. 
+
+I also used the debugger to check that the ant would not interpret more than ten commands during one tick and that the ant would correctly assign its instruction counter.
+
+
+Grasshopper
+
+The Grasshopper class is intended to be the base class for the AdultGrasshopper and BabyGrasshopper classes. Testing the AdultGrasshopper and BabyGrasshopper classes would simultaneously test the Grasshopper class itself since they must call the Grasshopper constructor and use its doSomething() function.
+
+
+BabyGrasshopper
+
+To test the BabyGrasshopper class, I surrounded a baby grasshopper with a few food items inside a rectangle of pebbles. If correctly implemented, the grasshopper would move foward every two ticks and eat the food then transform into an AdultGrasshopper. When transforming, it will leave behind food and be removed from the simulation because it is "dead".
+
+AdultGrasshopper
+
+To test the AdultGrasshopper class, I used the same field file as in testing the babyGrasshopper. If correctly implemented, the adult grasshopper should decrement its energy during every tick then sometimes 
+jump over the pebbles and move forward. At some point in the simulation, it should be removed because it will die.

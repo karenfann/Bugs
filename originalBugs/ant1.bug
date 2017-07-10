@@ -1,0 +1,57 @@
+colony: USCAnt // first line specifies the ant's name
+ 
+// This program controls a single ant and causes it to move
+// around the field and do things.
+// This ant moves around randomly, picks up food if it
+// happens to stumble upon it, eats when it gets hungry,
+// and will drop food on its anthill if it happens to 
+// stumble back on its anthill while holding food.
+ 
+// here's the ant's programming instructions, written
+// in our 'Bugs' language
+ 
+start:
+ 	faceRandomDirection
+ 	emitPheromone
+ 	if i_smell_danger_in_front_of_me then goto rotate   
+ 	moveForward
+ 	if i_was_bit then goto move_away
+ 	if i_am_standing_with_an_enemy then goto bite
+ 	if i_was_blocked_from_moving then goto rotate        
+ 	if i_am_standing_on_food then goto on_food
+ 	if i_am_hungry then goto eat_food
+ 	if i_am_standing_on_my_anthill then goto on_hill
+ 	if i_smell_pheromone_in_front_of_me then goto to_pheromone
+ 	goto start 	// jump back to the "start:" line
+ 
+move_away:
+	moveForward
+	goto start
+
+bite:
+	bite
+	goto start
+
+rotate:
+	rotateClockwise
+	goto start
+
+on_food:
+ 	pickUpFood
+ 	goto start 	// jump back to the "start:" line
+ 
+eat_food:
+ 	eatFood          // assumes our ant has already picked up food
+ 	emitPheromone
+ 	goto start 	// jump back to the "start:" line
+ 
+on_hill:
+ 	dropFood    // feed the anthill's queen so she
+                 // can produce more ants for the colony
+    emitPheromone
+ 	goto start  // jump back to the "start:" line
+
+to_pheromone:
+	moveForward
+	emitPheromone
+	goto start
